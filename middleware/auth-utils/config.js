@@ -131,6 +131,12 @@ Config.prototype.configure = function configure (config) {
   this.realmUrl = this.authServerUrl + '/realms/' + this.realm;
 
   /**
+   * When redirecting behind proxy.
+   * @type {String}
+   */
+  this.baseUrl = config['base-url'] || config.baseUrl;
+
+  /**
    * Root realm admin URL.
    * @type {String} */
   this.realmAdminUrl = this.authServerUrl + '/admin/realms/' + this.realm;

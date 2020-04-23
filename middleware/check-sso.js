@@ -19,14 +19,7 @@ const UUID = require('./../uuid');
 const URL = require('url');
 
 function forceCheckSSO (keycloak, request, response) {
-  const host = request.hostname;
-  const headerHost = request.headers.host.split(':');
-  const port = headerHost[1] || '';
-  const protocol = request.protocol;
-  let hasQuery = ~(request.originalUrl || request.url).indexOf('?');
-
-  const redirectUrl = protocol + '://' + host + (port === '' ? '' : ':' + port) + (request.originalUrl || request.url) + (hasQuery ? '&' : '?') + 'auth_callback=1';
-
+  const redirectUrl = keycloak.redirectUrl(request);
   if (request.session) {
     request.session.auth_redirect_uri = redirectUrl;
   }

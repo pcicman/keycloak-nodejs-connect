@@ -399,6 +399,20 @@ Keycloak.prototype.loginUrl = function (uuid, redirectUrl) {
   return url;
 };
 
+Keycloak.prototype.redirectUrl = function (request) {
+  let baseUrl = this.config.baseUrl;
+
+  if (!baseUrl) {
+    const host = request.hostname;
+    const headerHost = request.headers.host.split(':');
+    const port = headerHost[1] || '';
+    const protocol = request.protocol;
+    baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port);
+  }
+  const hasQuery = ~(request.originalUrl || request.url).indexOf('?');
+  return baseUrl + (request.originalUrl || request.url) + (hasQuery ? '&' : '?') + 'auth_callback=1';
+};
+
 Keycloak.prototype.logoutUrl = function (redirectUrl) {
   return this.config.realmUrl +
   '/protocol/openid-connect/logout' +
